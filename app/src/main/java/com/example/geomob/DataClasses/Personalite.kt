@@ -8,8 +8,8 @@ import com.example.geomob.DataClasses.Pays
 @Entity(tableName = "Personlaite",
     foreignKeys = [ForeignKey(
     entity = Pays::class,
-    parentColumns = arrayOf("paysId"),
-    childColumns = arrayOf("paysId"),
+    parentColumns = arrayOf("codePays"),
+    childColumns = arrayOf("codePays"),
     onDelete = ForeignKey.CASCADE
 )]
 )
@@ -17,4 +17,4 @@ data class Personalite (@PrimaryKey(autoGenerate = true) val idPersonalite: Long
                         val nomPersonalite : String,
                         var occupationIn : String,
                         val dateNaissanceIn : String?,
-                        val paysId : Long) {}
+                        val codePays : String) {}

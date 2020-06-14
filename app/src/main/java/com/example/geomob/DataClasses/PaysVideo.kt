@@ -9,11 +9,11 @@ import com.example.geomob.DataClasses.Pays
 @Entity(tableName = "PaysVideo",
     foreignKeys = [ForeignKey(
         entity = Pays::class,
-        parentColumns = arrayOf("paysId"),
-        childColumns = arrayOf("paysId"),
+        parentColumns = arrayOf("codePays"),
+        childColumns = arrayOf("codePays"),
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class PaysVideo (@PrimaryKey(autoGenerate = true) val idPaysVideo: Long?,
+data class PaysVideo (@PrimaryKey val idPaysVideo: String,
                       val resId : Int,
-                      val paysId : Long) {}
+                      val codePays : String) {}

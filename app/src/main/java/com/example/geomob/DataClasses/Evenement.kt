@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Evenement",
     foreignKeys = [ForeignKey(
         entity = Pays::class,
-        parentColumns = arrayOf("paysId"),
-        childColumns = arrayOf("paysId"),
+        parentColumns = arrayOf("codePays"),
+        childColumns = arrayOf("codePays"),
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class Evenement (@PrimaryKey(autoGenerate = true) val idEvenement: Long?,
                         val date : String,
                         var description : String,
-                        val paysId : Long) {}
+                        val codePays : String) {}

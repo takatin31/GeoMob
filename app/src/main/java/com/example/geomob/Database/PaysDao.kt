@@ -81,29 +81,29 @@ interface PaysDao {
     @Query("Select * from Pays")
     fun loadAllPays(): List<Pays>
 
-    @Query("Select * from Pays Where paysId = :id")
-    fun findPaysById(id : Long): List<Pays>
+    @Query("Select * from Pays Where codePays = :countryCode")
+    fun findPaysByCountryCode(countryCode : String): List<Pays>
 
     @Query("Select * from Ressource")
     fun loadAllRessources(): List<Ressource>
 
-    @Query("Select * from Ressource where paysId = :paysId")
-    fun loadAllRessourcesByPaysId(paysId : Long): List<Ressource>
+    @Query("Select * from Ressource where codePays = :countryCode")
+    fun loadAllRessourcesByCountryCode(countryCode : String): List<Ressource>
 
-    @Query("Select * from Personlaite where paysId = :paysId")
-    fun loadAllPersonalitesByPaysId(paysId : Long): List<Personalite>
+    @Query("Select * from Personlaite where codePays = :countryCode")
+    fun loadAllPersonalitesByPaysCountryCode(countryCode : String): List<Personalite>
 
-    @Query("Select * from Tweet where paysId = :paysId")
-    fun loadAllTweetsByPaysId(paysId : Long): List<Tweet>
+    @Query("Select * from Tweet where codePays = :countryCode")
+    fun loadAllTweetsByPaysCountryCode(countryCode : String): List<Tweet>
 
-    @Query("Select * from PaysPhoto where paysId = :paysId")
-    fun loadAllPaysPhotoByPaysId(paysId : Long): List<PaysPhoto>
+    @Query("Select * from PaysPhoto where codePays = :countryCode")
+    fun loadAllPaysPhotoByPaysCountryCode(countryCode : String): List<PaysPhoto>
 
-    @Query("Select * from PaysVideo where paysId = :paysId")
-    fun loadAllPaysVideoByPaysId(paysId : Long): List<PaysVideo>
+    @Query("Select * from PaysVideo where codePays = :countryCode")
+    fun loadAllPaysVideoByPaysCountryCode(countryCode : String): List<PaysVideo>
 
-    @Query("Select * from Evenement where paysId = :paysId")
-    fun loadAllEvenementByPaysId(paysId : Long): List<Evenement>
+    @Query("Select * from Evenement where codePays = :countryCode")
+    fun loadAllEvenementByPaysCountryCode(countryCode : String): List<Evenement>
 
     @Query("Select * from PersonalitePhoto where idPersonalite = :personaliteId")
     fun loadAllPersonalitesPhotoByPaysId(personaliteId : Long): List<PersonalitePhoto>
