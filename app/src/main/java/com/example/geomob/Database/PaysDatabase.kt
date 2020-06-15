@@ -36,7 +36,7 @@ abstract class PaysDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     PaysDatabase::class.java,
-                    "Database1.9"
+                    "Database2.0"
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

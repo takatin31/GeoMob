@@ -15,6 +15,7 @@ import com.blongho.country_data.World
 import com.example.geomob.Activities.PaysActivity
 import com.example.geomob.Adapters.CountriesAdapter
 import com.example.geomob.Adapters.PhotosAdapter
+import com.example.geomob.Adapters.ResourceAdapter
 import com.example.geomob.DataClasses.*
 import com.example.geomob.Database.PaysDatabase
 import com.example.geomob.Other.RequestHandler
@@ -47,8 +48,8 @@ class MainFragment : Fragment() {
     lateinit var personsAdapter: PhotosAdapter
     lateinit var PersonsLayoutManager : LinearLayoutManager
 
-    lateinit var resourceAdapter: PhotosAdapter
-    lateinit var resourceManager : LinearLayoutManager
+    lateinit var resourceAdapter: ResourceAdapter
+    lateinit var resourceLayoutManager : LinearLayoutManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,6 +63,14 @@ class MainFragment : Fragment() {
 
         photosAdapter = PhotosAdapter(activity!! as PaysActivity, photosList)
         recyclerPhotos.adapter = photosAdapter
+
+        resourceLayoutManager = LinearLayoutManager(activity)
+        recyclerRessources.layoutManager = resourceLayoutManager
+
+        resourceAdapter = ResourceAdapter(activity!! as PaysActivity, resourcesList)
+        recyclerRessources.adapter = resourceAdapter
+
+        getRessources(countryCode)
 
     }
 
@@ -147,7 +156,15 @@ class MainFragment : Fragment() {
 
             }
         }
+    }
 
+    fun getRessources(code : String){
+        AppExecutors.instance!!.diskIO().execute {
+            resourcesList.clear()
+            val resultList = paysDatabase.paysDao().loadAllRessourcesByCountryCode(code)
+            resourcesList.addAll(resultList)
+            resourceAdapter.notifyDataSetChanged()
+        }
     }
 
 }

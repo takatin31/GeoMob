@@ -15,6 +15,5 @@ import com.example.geomob.DataClasses.Pays
 )
 data class Personalite (@PrimaryKey(autoGenerate = true) val idPersonalite: Long?,
                         val nomPersonalite : String,
-                        var occupationIn : String,
-                        val dateNaissanceIn : String?,
+                        var resId : Int,
                         val codePays : String) {}
