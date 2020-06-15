@@ -81,7 +81,7 @@ interface PaysDao {
     @Query("Select * from Pays")
     fun loadAllPays(): List<Pays>
 
-    @Query("Select * from Pays Where codePays = :countryCode")
+    @Query("Select * from Pays Where codePays = :countryCode Order By seen, nomPays")
     fun findPaysByCountryCode(countryCode : String): List<Pays>
 
     @Query("Select * from Ressource")
