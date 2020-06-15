@@ -14,6 +14,6 @@ import com.example.geomob.DataClasses.Pays
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class PaysPhoto (@PrimaryKey val idPaysPhoto: String,
-                        val resId : Int,
+data class PaysPhoto (@PrimaryKey val idPaysPhoto: Int,
+                        val urlPhoto: String,
                         val codePays : String) {}

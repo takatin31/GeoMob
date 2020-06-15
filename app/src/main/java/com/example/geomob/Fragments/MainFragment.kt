@@ -7,18 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.blongho.country_data.World
 import com.example.geomob.Activities.PaysActivity
-import com.example.geomob.DataClasses.Pays
+import com.example.geomob.Adapters.CountriesAdapter
+import com.example.geomob.Adapters.PhotosAdapter
+import com.example.geomob.DataClasses.*
 import com.example.geomob.Database.PaysDatabase
 import com.example.geomob.Other.RequestHandler
 import com.example.geomob.Other.RequestHandler.Companion.getInstance
 
 import com.example.geomob.R
 import com.example.geomob.Threads.AppExecutors
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.time.LocalDate
 
@@ -29,6 +33,22 @@ class MainFragment : Fragment() {
     private lateinit var country : Pays
     private lateinit var paysDatabase : PaysDatabase
     var player : MediaPlayer? = null
+    var photosList = arrayListOf<PaysPhoto>()
+    var resourcesList = arrayListOf<Ressource>()
+    var eventsList = arrayListOf<Evenement>()
+    var personsList = arrayListOf<Personalite>()
+
+    lateinit var photosAdapter: PhotosAdapter
+    lateinit var photosLayoutManager : LinearLayoutManager
+
+    lateinit var eventsAdapter: PhotosAdapter
+    lateinit var eventsLayoutManager : LinearLayoutManager
+
+    lateinit var personsAdapter: PhotosAdapter
+    lateinit var PersonsLayoutManager : LinearLayoutManager
+
+    lateinit var resourceAdapter: PhotosAdapter
+    lateinit var resourceManager : LinearLayoutManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +56,12 @@ class MainFragment : Fragment() {
         paysDatabase = PaysDatabase.getDatabase(activity!!)
         countryCode = (activity as PaysActivity).getCountryCode()
         getCountryByCode(countryCode)
+
+        photosLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerPhotos.layoutManager = photosLayoutManager
+
+        photosAdapter = PhotosAdapter(activity!! as PaysActivity, photosList)
+        recyclerPhotos.adapter = photosAdapter
 
     }
 
@@ -75,7 +101,7 @@ class MainFragment : Fragment() {
                 val urlDesc =
                     "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=${pays.nomPays}"
 
-                val jsonRequestNbrDeaths = JsonObjectRequest(
+                val jsonRequestDescription = JsonObjectRequest(
                     Request.Method.GET, urlDesc, null,
                     Response.Listener { response ->
                         val pages = response.getJSONObject("query").getJSONObject("pages")
@@ -88,15 +114,34 @@ class MainFragment : Fragment() {
                             descriptionWebView.loadData(description, "text/html; charset=utf-8", "utf-8")
                         }
 
-
-
                     },
                     Response.ErrorListener {
                         Log.d("Error", "Request error")
 
                     })
 
-                getInstance(activity!!).addToRequestQueue(jsonRequestNbrDeaths)
+                getInstance(activity!!).addToRequestQueue(jsonRequestDescription)
+
+                val photosUrl = "https://pixabay.com/api/?key=16824293-84fa13cffe00ccd9ffa414c78&q=${pays.nomPays}&image_type=photo"
+                val jsonRequestPhotos = JsonObjectRequest(
+                    Request.Method.GET, photosUrl, null,
+                    Response.Listener { response ->
+                        photosList.clear()
+                        val items = response.getJSONArray("hits")
+                        for (i in 0 until items.length()){
+                            val pic = items.getJSONObject(i)
+                            val id = pic.getInt("id")
+                            val url = pic.getString("webformatURL")
+                            photosList.add(PaysPhoto(id, url, pays.codePays))
+                        }
+                        photosAdapter.notifyDataSetChanged()
+                    },
+                    Response.ErrorListener {
+                        Log.d("Error", "Request error")
+
+                    })
+
+                getInstance(activity!!).addToRequestQueue(jsonRequestPhotos)
 
             }
         }
