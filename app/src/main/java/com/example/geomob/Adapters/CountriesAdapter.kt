@@ -42,6 +42,7 @@ class CountriesAdapter(val activity : MainActivity, val list : MutableList<Pays>
 
         holder.countryButtonView.setOnClickListener {
             val intent = Intent(activity, PaysActivity::class.java)
+            intent.putExtra("countryCode", pays.codePays)
             activity.startActivity(intent)
         }
 

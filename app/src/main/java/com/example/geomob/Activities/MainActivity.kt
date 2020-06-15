@@ -50,7 +50,9 @@ class MainActivity : AppCompatActivity() {
         CountryLocation.init()
 
         val pref = getSharedPreferences("PREF",0)
-        val isInitialized = pref.getBoolean("init", false)
+        var isInitialized = pref.getBoolean("init", false)
+
+        isInitialized = false
 
         layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
@@ -108,7 +110,6 @@ class MainActivity : AppCompatActivity() {
 
             depthPolygonFillLayer.withProperties(fillColor(rgb(102,178,255)))
 
-
             mapboxMap.style!!.addLayerAt(depthPolygonFillLayer, mapboxMap.style!!.layers.size-2)
 
             depthPolygonFillLayer.setFilter(
@@ -143,16 +144,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*
-
-    fun getRessources(){
-        AppExecutors.instance!!.diskIO().execute {
-            val list = paysDatabase.paysDao().loadAllRessources()
-            Log.i("listRes", list.toString())
-        }
-    }
-
-    */
 
     override fun onStart() {
         super.onStart()

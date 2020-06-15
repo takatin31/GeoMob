@@ -31,10 +31,10 @@ class CountryPagesAdapter(private val myContext: Context, fm: FragmentManager, i
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
             0 -> {
-                "Information du pays"
+                "Pays"
             }
             1 -> {
-                "Dernieres Videos"
+                "Videos"
             }
             2 -> {
                 "Tweets"
@@ -42,6 +42,8 @@ class CountryPagesAdapter(private val myContext: Context, fm: FragmentManager, i
             else -> "Information du pays"
         }
     }
+
+
 
     // this counts total number of tabs
     override fun getCount(): Int {

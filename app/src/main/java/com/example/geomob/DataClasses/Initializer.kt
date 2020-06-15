@@ -13,8 +13,8 @@ class Initializer{
             paysDatabase = PaysDatabase.getDatabase(context)
 
             val dz = Pays("DZ","Algeria", "Algiers", "", 2381741, 42972878, R.raw.dz, false)
-            val eg = Pays("EG","Egypte", "Cairo", "", 1010408, 100075480, R.raw.eg, false)
-            val sa = Pays("SA", "Kingdom of Saudi Arabia", "Riyadh", "", 2149690, 34218169, R.raw.sa, false)
+            val eg = Pays("EG","Egypt", "Cairo", "", 1010408, 100075480, R.raw.eg, false)
+            val sa = Pays("SA", "Saudi Arabia", "Riyadh", "", 2149690, 34218169, R.raw.sa, false)
             val jp = Pays("JP", "Japan", "Tokyo", "", 377975, 126150000, R.raw.jp, false)
             val my = Pays("MY", "Malaysia", "Kuala Lumpur", "", 330803, 32730000, R.raw.my, false)
 
