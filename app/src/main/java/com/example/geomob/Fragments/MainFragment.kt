@@ -143,6 +143,8 @@ class MainFragment : Fragment() {
 
                 getInstance(activity!!).addToRequestQueue(jsonRequestPhotos)
 
+
+
             }
         }
 

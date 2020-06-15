@@ -10,12 +10,14 @@ class PaysActivity : AppCompatActivity() {
 
     private val NUM_PAGES = 3
     private var countryCode = ""
+    private var countryName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pays)
 
         countryCode = intent.getStringExtra("countryCode")
+        countryName = intent.getStringExtra("countryName")
 
         val pagerAdapter = CountryPagesAdapter(this,supportFragmentManager, NUM_PAGES)
         mPager.adapter = pagerAdapter
@@ -25,5 +27,9 @@ class PaysActivity : AppCompatActivity() {
 
     fun getCountryCode() : String{
         return countryCode
+    }
+
+    fun getCountryName() : String{
+        return countryName
     }
 }

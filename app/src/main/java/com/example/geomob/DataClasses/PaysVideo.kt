@@ -15,5 +15,5 @@ import com.example.geomob.DataClasses.Pays
     )]
 )
 data class PaysVideo (@PrimaryKey val idPaysVideo: String,
-                      val resId : Int,
+                      val title : String,
                       val codePays : String) {}
