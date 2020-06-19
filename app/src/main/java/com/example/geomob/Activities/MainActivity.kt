@@ -1,9 +1,15 @@
 package com.example.geomob.Activities
 
 
+import android.app.Dialog
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blongho.country_data.World
@@ -73,6 +79,8 @@ class MainActivity : AppCompatActivity() {
 
         getPays()
 
+        getUnseenPays()
+
 
         mapView?.onCreate(savedInstanceState)
         mapView?.getMapAsync { mapboxMap ->
@@ -99,6 +107,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+
 
     }
 
@@ -144,7 +154,52 @@ class MainActivity : AppCompatActivity() {
             AppExecutors.instance!!.mainThread().execute{
                 adapter.notifyDataSetChanged()
             }
+        }
+    }
 
+    fun getUnseenPays(){
+        AppExecutors.instance!!.diskIO().execute {
+
+            val resultList = paysDatabase.paysDao().loadUnseenPays()
+            if (resultList.isNotEmpty()){
+                val pays = resultList[(resultList.indices).random()]
+                AppExecutors.instance!!.mainThread().execute{
+
+                    val d = Dialog(this)
+                    d.setContentView(R.layout.dialog_discover)
+
+                    d.findViewById<ImageView>(R.id.discoverCountryFlag)?.setImageResource(World.getFlagOf(pays.codePays))
+                    d.findViewById<TextView>(R.id.discoverCountryTitle)?.text = pays.nomPays
+
+                    d.findViewById<Button>(R.id.visitBtnView)?.setOnClickListener {
+                        markAsSeenCountry(pays)
+                        d.cancel()
+                        val intent = Intent(this, PaysActivity::class.java)
+                        intent.putExtra("countryCode", pays.codePays)
+                        intent.putExtra("countryName", pays.nomPays)
+                        startActivity(intent)
+                    }
+
+                    d.findViewById<ImageView>(R.id.closeDiscoverLayout)?.setOnClickListener {
+                        d.cancel()
+                    }
+
+                    d.show()
+                }
+            }
+        }
+    }
+
+
+    fun markAsSeenCountry(country : Pays){
+        AppExecutors.instance!!.diskIO().execute {
+            val paysDatabase = PaysDatabase.getDatabase(this)
+            paysDatabase.paysDao().markAsSeen(country.codePays)
+            val index = countriesList.indexOf(country)
+            countriesList[index].seen = true
+            AppExecutors.instance!!.mainThread().execute {
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
