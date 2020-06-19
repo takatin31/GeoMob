@@ -78,10 +78,10 @@ interface PaysDao {
     @Delete
     fun deleteTweet(tweet: Tweet)
 
-    @Query("Select * from Pays")
+    @Query("Select * from Pays Order By seen DESC, nomPays")
     fun loadAllPays(): List<Pays>
 
-    @Query("Select * from Pays Where codePays = :countryCode Order By seen, nomPays")
+    @Query("Select * from Pays Where codePays = :countryCode")
     fun findPaysByCountryCode(countryCode : String): List<Pays>
 
     @Query("Select * from Ressource")
@@ -107,4 +107,7 @@ interface PaysDao {
 
     @Query("Select * from PersonalitePhoto where idPersonalite = :personaliteId")
     fun loadAllPersonalitesPhotoByPaysId(personaliteId : Long): List<PersonalitePhoto>
+
+    @Query("Update Pays SET seen = 1 WHERE codePays = :countryCode")
+    fun markAsSeen(countryCode: String)
 }

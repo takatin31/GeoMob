@@ -152,7 +152,8 @@
                 android:id="@+id/recyclerRessources"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp" />
+                android:layout_margin="5dp"
+                android:scrollbars="horizontal" />
 
             <TextView
                 android:layout_width="match_parent"

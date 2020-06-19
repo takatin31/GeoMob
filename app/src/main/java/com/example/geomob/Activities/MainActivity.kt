@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val pref = getSharedPreferences("PREF",0)
         var isInitialized = pref.getBoolean("init", false)
 
-        isInitialized = false
+        //isInitialized = false
 
         layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
@@ -140,9 +140,14 @@ class MainActivity : AppCompatActivity() {
             countriesList.clear()
             val resultList = paysDatabase.paysDao().loadAllPays()
             countriesList.addAll(resultList)
-            adapter.notifyDataSetChanged()
+            Log.i("seeeeeeen", countriesList.toString())
+            AppExecutors.instance!!.mainThread().execute{
+                adapter.notifyDataSetChanged()
+            }
+
         }
     }
+
 
 
     override fun onStart() {

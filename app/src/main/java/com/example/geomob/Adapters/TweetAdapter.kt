@@ -31,19 +31,20 @@ class TweetAdapter(val activity : PaysActivity, val list : ArrayList<Tweet>) : R
     }
 
     override fun onBindViewHolder(holder: TweetViewHolder, position: Int) {
-        val tweet = list[position]
+        if (position < list.size){
+            val tweet = list[position]
 
-        holder.userName.text = tweet.userName
-        holder.screenName.text = tweet.screenName
-        holder.tweetCnt.text = tweet.contenu
+            holder.userName.text = tweet.userName
+            holder.screenName.text = tweet.screenName
+            holder.tweetCnt.text = tweet.contenu
 
-        Picasso.get().load(tweet.userImg).into(holder.userImage)
-        if (tweet.img == ""){
-            holder.tweetImg.visibility = View.GONE
-        }else{
-            holder.tweetImg.visibility = View.VISIBLE
-            Picasso.get().load(tweet.img).into(holder.tweetImg)
+            Picasso.get().load(tweet.userImg).into(holder.userImage)
+            if (tweet.img == ""){
+                holder.tweetImg.visibility = View.GONE
+            }else{
+                holder.tweetImg.visibility = View.VISIBLE
+                Picasso.get().load(tweet.img).into(holder.tweetImg)
+            }
         }
-
     }
 }

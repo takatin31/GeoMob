@@ -14,7 +14,9 @@ import com.blongho.country_data.World
 import com.example.geomob.Activities.MainActivity
 import com.example.geomob.Activities.PaysActivity
 import com.example.geomob.DataClasses.Pays
+import com.example.geomob.Database.PaysDatabase
 import com.example.geomob.R
+import com.example.geomob.Threads.AppExecutors
 import de.hdodenhof.circleimageview.CircleImageView
 
 class CountriesAdapter(val activity : MainActivity, val list : MutableList<Pays>) : RecyclerView.Adapter<CountriesAdapter.WordViewHolder>(){
@@ -41,6 +43,7 @@ class CountriesAdapter(val activity : MainActivity, val list : MutableList<Pays>
         holder.countryFlag.setImageResource(World.getFlagOf(pays.codePays))
 
         holder.countryButtonView.setOnClickListener {
+            markAsSeenCountry(position)
             val intent = Intent(activity, PaysActivity::class.java)
             intent.putExtra("countryCode", pays.codePays)
             intent.putExtra("countryName", pays.nomPays)
@@ -49,6 +52,21 @@ class CountriesAdapter(val activity : MainActivity, val list : MutableList<Pays>
 
         holder.itemLayout.setOnClickListener {
             activity.selectCountry(pays.codePays)
+        }
+
+        if (pays.seen){
+            holder.countryTitleView.setTextColor(activity.resources.getColor(R.color.seenCountry))
+        }
+    }
+
+    fun markAsSeenCountry(position: Int){
+        AppExecutors.instance!!.diskIO().execute {
+            val paysDatabase = PaysDatabase.getDatabase(activity)
+            paysDatabase.paysDao().markAsSeen(list[position].codePays)
+            list[position].seen = true
+            AppExecutors.instance!!.mainThread().execute {
+                notifyDataSetChanged()
+            }
         }
     }
 }

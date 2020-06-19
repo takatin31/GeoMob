@@ -13,9 +13,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.blongho.country_data.World
 import com.example.geomob.Activities.PaysActivity
-import com.example.geomob.Adapters.PhotosAdapter
-import com.example.geomob.Adapters.TweetAdapter
-import com.example.geomob.Adapters.ResourceAdapter
+import com.example.geomob.Adapters.*
 import com.example.geomob.DataClasses.*
 import com.example.geomob.Database.PaysDatabase
 import com.example.geomob.Other.RequestHandler.Companion.getInstance
@@ -39,11 +37,11 @@ class MainFragment : Fragment() {
     lateinit var photosAdapter: PhotosAdapter
     lateinit var photosLayoutManager : LinearLayoutManager
 
-    lateinit var eventsAdapter: TweetAdapter
+    lateinit var eventsAdapter: EventAdapter
     lateinit var eventsLayoutManager : LinearLayoutManager
 
-    lateinit var personsAdapter: TweetAdapter
-    lateinit var PersonsLayoutManager : LinearLayoutManager
+    lateinit var personsAdapter: PersonneAdapter
+    lateinit var personsLayoutManager : LinearLayoutManager
 
     lateinit var resourceAdapter: ResourceAdapter
     lateinit var resourceLayoutManager : LinearLayoutManager
@@ -67,7 +65,21 @@ class MainFragment : Fragment() {
         resourceAdapter = ResourceAdapter(activity!! as PaysActivity, resourcesList)
         recyclerRessources.adapter = resourceAdapter
 
+        personsLayoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerPersons.layoutManager = personsLayoutManager
+
+        personsAdapter = PersonneAdapter(activity!! as PaysActivity, personsList)
+        recyclerPersons.adapter = personsAdapter
+
+        eventsLayoutManager = LinearLayoutManager(activity)
+        recyclerHistorique.layoutManager = eventsLayoutManager
+
+        eventsAdapter = EventAdapter(activity!! as PaysActivity, eventsList)
+        recyclerHistorique.adapter = eventsAdapter
+
         getRessources(countryCode)
+        getPersons(countryCode)
+        getEvents(countryCode)
 
     }
 
@@ -149,8 +161,6 @@ class MainFragment : Fragment() {
 
                 getInstance(activity!!).addToRequestQueue(jsonRequestPhotos)
 
-
-
             }
         }
     }
@@ -164,4 +174,21 @@ class MainFragment : Fragment() {
         }
     }
 
+    fun getPersons(code : String){
+        AppExecutors.instance!!.diskIO().execute {
+            personsList.clear()
+            val resultList = paysDatabase.paysDao().loadAllPersonalitesByPaysCountryCode(code)
+            personsList.addAll(resultList)
+            personsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    fun getEvents(code : String){
+        AppExecutors.instance!!.diskIO().execute {
+            eventsList.clear()
+            val resultList = paysDatabase.paysDao().loadAllEvenementByPaysCountryCode(code)
+            eventsList.addAll(resultList)
+            eventsAdapter.notifyDataSetChanged()
+        }
+    }
 }
