@@ -15,5 +15,9 @@ import com.example.geomob.DataClasses.Pays
     )]
 )
 data class Tweet (@PrimaryKey(autoGenerate = true) val idTweet: Long?,
+                        val userImg : String,
+                        val userName : String,
+                        val screenName : String,
+                        val img : String,
                         val contenu : String,
                         val codePays : String) {}

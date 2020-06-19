@@ -13,19 +13,16 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.blongho.country_data.World
 import com.example.geomob.Activities.PaysActivity
-import com.example.geomob.Adapters.CountriesAdapter
 import com.example.geomob.Adapters.PhotosAdapter
+import com.example.geomob.Adapters.TweetAdapter
 import com.example.geomob.Adapters.ResourceAdapter
 import com.example.geomob.DataClasses.*
 import com.example.geomob.Database.PaysDatabase
-import com.example.geomob.Other.RequestHandler
 import com.example.geomob.Other.RequestHandler.Companion.getInstance
 
 import com.example.geomob.R
 import com.example.geomob.Threads.AppExecutors
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
-import java.time.LocalDate
 
 
 class MainFragment : Fragment() {
@@ -42,10 +39,10 @@ class MainFragment : Fragment() {
     lateinit var photosAdapter: PhotosAdapter
     lateinit var photosLayoutManager : LinearLayoutManager
 
-    lateinit var eventsAdapter: PhotosAdapter
+    lateinit var eventsAdapter: TweetAdapter
     lateinit var eventsLayoutManager : LinearLayoutManager
 
-    lateinit var personsAdapter: PhotosAdapter
+    lateinit var personsAdapter: TweetAdapter
     lateinit var PersonsLayoutManager : LinearLayoutManager
 
     lateinit var resourceAdapter: ResourceAdapter
